@@ -1,0 +1,28 @@
+#include "atcoder/template/template.hpp"
+using namespace std;
+
+int main() {
+  ios_base::sync_with_stdio(false);
+  cin.tie(NULL);
+
+  int n, m;
+  if(!(cin >> n >> m)) return 0;
+
+  vi a(n), b(n-1);
+  rep(i, n) cin >> a[i];
+  rep(i, n-1) cin >> b[i];
+
+  ll ans = 1e18;
+  rep(k, m) { // A[0]のmod Mを0〜M-1で全探索
+    ll cost = (k - a[0]%m + m) % m; // A[0]のコスト
+    ll cur = k;
+    rep(i, n-1) {
+      ll need = (b[i] - cur + m) % m; // A[i+1]に必要なmod M
+      cost += (need - a[i+1]%m + m) % m;
+      cur = need;
+    }
+    chmin(ans, cost);
+  }
+  cout << ans << "\n";
+  return 0;
+}
